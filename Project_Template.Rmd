@@ -1,0 +1,92 @@
+---
+output: 
+  pdf_document:
+    keep_tex: yes
+    fig_caption: yes
+    number_sections: yes
+geometry: margin=2.54cm
+title: "Insert title of project here"
+subtitle: "https://github.com/BenjaminEgan1/EganSchofield_ENV872_FinalProject.git"
+author: "Ben Egan & Hannah schofield"
+fontsize: 12pt
+mainfont: Times New Roman
+
+---
+
+\newpage
+\tableofcontents 
+\newpage
+\listoftables 
+\newpage
+\listoffigures 
+\newpage
+
+```{r setup, include=FALSE}
+# Set your working directory
+setwd("C:/Users/benja/OneDrive/Documents/R/win-library/EganSchofield_ENV872_FinalProject")
+
+
+# Load your packages
+library(lubridate)
+library(ggplot2)
+library(dplyr)
+
+# Set your ggplot theme
+
+mytheme <- theme_classic(base_size = 14) +
+  theme(axis.text = element_text(color = "black"), 
+        legend.position = "top")
+theme_set(mytheme)
+
+# Load your datasets
+#getwd()
+SOTFRaw <- read.csv("./Data/Raw/SOTF_Data_csv.csv")
+
+```
+
+
+# Rationale and Research Questions
+**I aim to research the data in question**
+
+
+\newpage
+
+# Dataset Information
+```{r information}
+head(SOTFRaw)
+dim(SOTFRaw)
+```
+
+
+
+\newpage
+
+# Exploratory Analysis 
+```{r}
+SOTF_Childs <- SOTFRaw %>% filter(map_code %in% c("MA_CH09", "MA_CH08", "MA_CH07", "MA_CH06", "MA_CH05", "MA_CH04", "MA_CH03", "MA_CH02", "MA_CH01"))
+```
+
+
+
+\newpage
+
+# Analysis
+
+
+
+## Question 1: <insert specific question here and add additional subsections for additional questions below, if needed>
+
+## Question 2: 
+
+
+
+
+\newpage
+
+# Summary and Conclusions
+
+
+\newpage
+
+# References
+<add references here if relevant, otherwise delete this section> 
