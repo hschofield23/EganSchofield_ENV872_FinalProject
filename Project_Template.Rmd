@@ -37,7 +37,7 @@ library(mapview)
 
 # Set your ggplot theme
 
-mytheme <- theme_classic(base_size = 14) +
+mytheme <- theme_classic(base_size = 10) +
   theme(axis.text = element_text(color = "black"), 
         legend.position = "top")
 theme_set(mytheme)
@@ -75,11 +75,14 @@ SOTF_Childs <- SOTFRaw %>% filter(map_code %in% c("MA_CH09", "MA_CH08", "MA_CH07
 
 na.omit(SOTF_Childs)
 
-Childs_Plot_NO3 <- ggplot(SOTF_Childs, aes(x = Sample.Date, y = NO3.N_µgL, color = SiteName )) + geom_point()  + geom_smooth( se = FALSE)
+Childs_Plot_NO3 <- ggplot(SOTF_Childs, aes(x = Sample.Date, y = NO3.N_µgL, color = SiteName )) + geom_point()  + geom_smooth( se = FALSE) 
 
-Childs_Plot_Temps <- ggplot(SOTF_Childs, aes(x = Sample.Date, y = Water.temperature...F., color = SiteName )) + geom_point()  #+ geom_smooth( se = FALSE)
+Childs_Plot_TDN <- ggplot(SOTF_Childs, aes(x = Sample.Date, y = TDN_µgL, color = SiteName)) + geom_point()  + geom_smooth(se = FALSE)
+
+Childs_Plot_Temps <- ggplot(SOTF_Childs, aes(x = Sample.Date, y = Water.temperature...F., color = SiteName )) + geom_point()
 
 print(Childs_Plot_NO3)
+print(Childs_Plot_TDN)
 print(Childs_Plot_Temps)
 ```
 ```{r spatial Analysis}
@@ -101,9 +104,9 @@ mapview(SOTF.sf)
 
 
 
-## Question 1: <insert specific question here and add additional subsections for additional questions below, if needed>
+## Question 1: Does concentration of nutrient fluctuate as you move down stream
 
-## Question 2: 
+## Question 2: What Nutrients are correlated to eachother?
 
 
 
@@ -111,6 +114,7 @@ mapview(SOTF.sf)
 \newpage
 
 # Summary and Conclusions
+  
 
 
 \newpage
