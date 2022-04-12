@@ -46,7 +46,7 @@ theme_set(mytheme)
 
 # Load your datasets
 #getwd()
-SOTFRaw <- read.xlsx("/Users/hannahschofield/ENV872/ENV872_FinalProj/EganSchofield_ENV872_FinalProject/Data/Raw/SOTF_Data (1).xlsx", sheet = 3)
+SOTFRaw <- read.csv("/Users/hannahschofield/ENV872/ENV872_FinalProj/EganSchofield_ENV872_FinalProject/Data/Raw/SOTF_Data_2.csv")
 
 
 ```
@@ -60,7 +60,7 @@ SOTFRaw <- read.xlsx("/Users/hannahschofield/ENV872/ENV872_FinalProj/EganSchofie
 
 # Dataset Information
 ```{r information}
-head(SOTFRaw)
+head(SOTFRaw) 
 dim(SOTFRaw)
 ```
 
@@ -70,26 +70,50 @@ dim(SOTFRaw)
 
 # Exploratory Analysis 
 ```{r Exploratory}
-SOTFRaw$Sample.Date <- as.Date(SOTFRaw$Sample.Date, origin, format = "%m/%d/%Y")
+SOTFRaw$Sample.Date <- as.Date(SOTFRaw$Sample.Date, origin, format = "%m/%d/%y")
 
-class(SOTFRaw$Sample.Date)
+class(SOTFRaw$`Sample.Date`)
 colnames(SOTFRaw)
 
-SOTF_Childs <- SOTFRaw %>% filter(map_code %in% c("MA_CH09", "MA_CH08", "MA_CH07", "MA_CH06", "MA_CH05", "MA_CH04", "MA_CH03", "MA_CH02", "MA_CH01")) %>% select(Sample.ID, SiteName, Sample.Date, map_code, Latitude, Longitude, 'State/Region', `NO3-N_µgL`, `NH4-N_µgL`, `TDN_µgL`, `PO4-P_µgL`, `SiO2_mgL`, `DOC_mgL`, `Water.temperature.(°F)`)
+SOTF_Childs <- SOTFRaw %>% filter(map_code %in% c("MA_CH09", "MA_CH08", "MA_CH07", "MA_CH06", "MA_CH05", "MA_CH04", "MA_CH03", "MA_CH02", "MA_CH01")) %>% select(`Sample.ID`, SiteName, Sample.Date, map_code, Latitude, Longitude, `State.Region`, `NO3.N_µgL`, `NH4.N_µgL`, `TDN_µgL`, `PO4.P_µgL`, `SiO2_mgL`, `DOC_mgL`, `Water.temperature...F.`)
 
 na.omit(SOTF_Childs)
 
-Childs_Plot_NO3 <- ggplot(SOTF_Childs, aes(x = Sample.Date, y = `NO3-N_µgL`, color = SiteName )) + geom_point()  + geom_smooth(se = FALSE) 
+#Nitrate over time 
+ggplot(SOTF_Childs, aes(x = Sample.Date, y = `NO3.N_µgL`, color = SiteName )) + geom_point()  + geom_smooth(se = FALSE) + labs(title = "Child's River Nitrate(NO3) Concentration") + xlab("Sample Date") + ylab("Nitrate Concentration (µgL)")
 
-Childs_Plot_TDN <- ggplot(SOTF_Childs, aes(x = Sample.Date, y = TDN_µgL, color = SiteName)) + geom_point()  + geom_smooth(se = FALSE)
+#total dissolved nitrate over time 
+ggplot(SOTF_Childs, aes(x = Sample.Date, y = `TDN_µgL`, color = SiteName)) + geom_point()  + geom_smooth(se = FALSE) + labs(title = "Child's River Total Dissolved Nitrogen(TDN) Concentration") + xlab("Sample Date") + ylab("TDN Concentration (µgL)")
 
-Childs_Plot_Temps <- ggplot(SOTF_Childs, aes(x = Sample.Date, y = `Water.temperature.(°F)`, color = SiteName )) + geom_point()
+#ammonium nitrate over time 
+ggplot(SOTF_Childs, aes(x = Sample.Date, y = `NH4.N_µgL`, color = SiteName )) + geom_point()  + geom_smooth(se = FALSE) + labs(title = "Child's River Ammonium Nitrate(NH4-N) Concentration") + xlab("Sample Date") + ylab("Ammonium Nitrate(NH4.N) Concentration (µgL)")
 
-print(Childs_Plot_NO3)
-print(Childs_Plot_TDN)
-print(Childs_Plot_Temps)
+#phosphate over time 
+ggplot(SOTF_Childs, aes(x = Sample.Date, y = `PO4.P_µgL`, color = SiteName)) + geom_point()  + geom_smooth(se = FALSE) + labs(title = "Child's River Phosphate(PO4) Concentration") + xlab("Sample Date") + ylab("PO4 Concentration (µgL)")
+
+#silicon dioxide over time 
+ggplot(SOTF_Childs, aes(x = Sample.Date, y = `SiO2_mgL`, color = SiteName)) + geom_point()  + geom_smooth(se = FALSE) + labs(title = "Child's River Silicon Dioxide(SiO2) Concentration") + xlab("Sample Date") + ylab("SiO2 Concentration (mgL)")
+
+#dissolved organic carbon over time 
+ggplot(SOTF_Childs, aes(x = Sample.Date, y = `DOC_mgL`, color = SiteName)) + geom_point()  + geom_smooth(se = FALSE) + labs(title = "Child's River Dissolved Organic Carbon(DOC) Concentration") + xlab("Sample Date") + ylab("DOC Concentration (mgL)")
+
+#water temperature over time 
+Childs_Plot_Temps <- ggplot(SOTF_Childs, aes(x = Sample.Date, y = `Water.temperature...F.`, color = SiteName )) + geom_point()+ labs(title = "Child's River Temperature Over Time") + xlab("Sample Date") + ylab("Temperature (F)")
+
+
+#print(Childs_Plot_NO3)
+#print(Childs_Plot_TDN)
+#print(Childs_Plot_NH4)
+#print(Childs_Plot_PO4)
+#print(Childs_Plot_SiO2)
+#print(Childs_Plot_DOC)
+#print(Childs_Plot_Temps)
+
 ```
-```{r correlationAnalysis}
+
+
+
+```{r correlationAnalysis IGNORE}
 #install.packages("ggpubr")
 library(ggpubr)
 library(GGally)
@@ -129,7 +153,6 @@ ggscatter(SOTF_Childs, x = "TDN_µgL", y = "DOC_mgL",
 
 cor.test(SOTF_Childs$`TDN_µgL`,SOTF_Childs$`Water.temperature.(°F)`)
 
-
 #SiO2 Correlation 
 cor.test(SOTF_Childs$`SiO2_mgL`,SOTF_Childs$`DOC_mgL`)
 cor.test(SOTF_Childs$`SiO2_mgL`,SOTF_Childs$`Water.temperature.(°F)`)
@@ -141,6 +164,12 @@ cor.test(SOTF_Childs$`DOC_mgL`,SOTF_Childs$`Water.temperature.(°F)`)
 
 
 ```
+```{r correlation} 
+
+ggpairs(SOTF_Childs[8:14])
+
+```
+
 
 ```{r spatial Analysis}
 SOTF.sf <- SOTF_Childs %>% 
@@ -161,9 +190,10 @@ mapview(SOTF.sf)
 
 
 
-## Question 1: Does concentration of nutrient fluctuate as you move down stream
+## Question 1: Does nutrient concentration fluctuate as you move down stream?
 
-## Question 2: What Nutrients are correlated to eachother?
+
+## Question 2: Are nutrient concentrations correlated with temperature and/or each other?
 
 
 
@@ -171,7 +201,9 @@ mapview(SOTF.sf)
 \newpage
 
 # Summary and Conclusions
-  
+
+Not correlated with temperature 
+Some 
 
 
 \newpage
